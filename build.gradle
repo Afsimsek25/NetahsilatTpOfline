@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+}
+compileJava.options.encoding = 'UTF-8'
+
+group 'QualityMuseumProject.generated'
+version '1.0'
+
+test {
+    useJUnitPlatform()
+}
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+
+jar {
+    // Include compiled test classes and their sources
+    from sourceSets.test.output+sourceSets.test.allSource
+
+    // Collect and zip all classes from both test and runtime configurations
+    from { configurations.testRuntimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+compileTestJava.options.compilerArgs.add '-parameters'
+
+dependencies {
+    // Use JUnit Jupiter API for testing.
+    testImplementation  'org.junit.jupiter:junit-jupiter-api:5.6.0'
+
+    // Module "junit-jupiter-params" of JUnit 5.
+    testImplementation   group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.6.0'
+
+    // Use JUnit Jupiter Engine for testing.
+    testImplementation   'org.junit.jupiter:junit-jupiter-engine:5.6.0'
+
+    implementation 'io.testproject:java-sdk:1.1.0-RELEASE'
+
+    // https://mvnrepository.com/artifact/com.sun.mail/javax.mail
+    implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+
+    // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-suite-engine
+    testImplementation group: 'org.junit.platform', name: 'junit-platform-suite-engine', version: '1.9.1'
+
+
+
+
+
+
+}
